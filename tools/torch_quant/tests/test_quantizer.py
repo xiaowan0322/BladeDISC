@@ -150,6 +150,7 @@ class QuantizerTest(unittest.TestCase):
         self.assertEqual(len(quantizer.module_filter.exclude_names), 2)
 
         quant_model = quantizer.quantize(model)
+        torch.jit.trace(quant_model, dummy_input)
         modules = dict(model.named_modules())
         quant_modules = dict(quant_model.named_modules())
         for name in quantizer.module_filter.exclude_names:
