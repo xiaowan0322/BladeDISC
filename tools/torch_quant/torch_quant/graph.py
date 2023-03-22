@@ -445,7 +445,11 @@ def quantizable_module_to_amp(ctx: GraphModContext) -> None:
         act = node.args[0]
         act_name = act.name if act.op == 'call_function' else act.target
         act_ob = ctx.modules[f'{act_name}_ob']
+        if not getattr(act_ob, 'qparams_calculated', True):
+            act_ob.calculate_qparams()
         out_ob = ctx.modules[f'{node.target}_ob']
+        if not getattr(out_ob, 'qparams_calculated', True):
+            out_ob.calculate_qparams()
         w_ob = ctx.modules[f'{node.target}.w_ob']
         bias_ob = ctx.modules.get(f'{node.target}.bias_ob') if ctx.bias_ob_ctr else None
         dst = dst_type.from_float(src, w_ob, bias_ob)
