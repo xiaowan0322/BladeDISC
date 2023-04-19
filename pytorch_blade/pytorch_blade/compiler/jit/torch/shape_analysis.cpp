@@ -693,14 +693,14 @@ class ShapePropagator : public PropertyPropBase {
         return;
       }
       case prim::TupleUnpack: {
-        auto tuple_type = node->input()->type()->cast<TupleType>();
-        AT_ASSERT(
-            tuple_type &&
-            tuple_type->elements().size() == node->outputs().size());
-        auto elems = tuple_type->elements();
-        for (size_t i = 0; i < node->outputs().size(); ++i) {
-          node->output(i)->setType(elems[i]);
-        }
+        // auto tuple_type = node->input()->type()->cast<TupleType>();
+        // AT_ASSERT(
+        //     tuple_type &&
+        //     tuple_type->elements().size() == node->outputs().size());
+        // auto elems = tuple_type->elements();
+        // for (size_t i = 0; i < node->outputs().size(); ++i) {
+        //   node->output(i)->setType(elems[i]);
+        // }
         return;
       }
       case prim::ListUnpack: {

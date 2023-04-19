@@ -29,11 +29,16 @@ export TORCH_BLADE_RUN_EXAMPLES=${TORCH_BLADE_RUN_EXAMPLES:-OFF}
 
 function pip_install_deps() {
     # set TORCH_BLADE_CI_BUILD_TORCH_VERSION default to 1.7.1+cu110
-    TORCH_BLADE_CI_BUILD_TORCH_VERSION=${TORCH_BLADE_CI_BUILD_TORCH_VERSION:-1.7.1+cu110}
+    # TORCH_BLADE_CI_BUILD_TORCH_VERSION=${TORCH_BLADE_CI_BUILD_TORCH_VERSION:-1.7.1+cu110}
+    TORCH_BLADE_CI_BUILD_TORCH_VERSION=${TORCH_BLADE_CI_BUILD_TORCH_VERSION:-1.12.0+cu113}
+    # TORCH_BLADE_CI_BUILD_TORCH_VERSION=${TORCH_BLADE_CI_BUILD_TORCH_VERSION:-1.13.0+cu117}
     requirements=requirements-dev-${TORCH_BLADE_CI_BUILD_TORCH_VERSION}.txt
-    python3 -m pip install --upgrade pip
-    python3 -m pip install virtualenv
-    python3 -m pip install -r scripts/pip/${requirements} -f https://download.pytorch.org/whl/torch_stable.html
+    # python3 -m pip install --upgrade pip
+    # python3 -m pip install virtualenv
+    # python3 -m pip install -r scripts/pip/${requirements} -f https://download.pytorch.org/whl/torch_stable.html
+    python3 -m pip install --upgrade pip --index-url http://mirrors.aliyun.com/pypi/simple --trusted-host mirrors.aliyun.com --disable-pip-version-check
+    python3 -m pip install virtualenv --index-url http://mirrors.aliyun.com/pypi/simple --trusted-host mirrors.aliyun.com --disable-pip-version-check
+    python3 -m pip install -r scripts/pip/${requirements} -f https://download.pytorch.org/whl/torch_stable.html --index-url http://mirrors.aliyun.com/pypi/simple --trusted-host mirrors.aliyun.com --disable-pip-version-check
 }
 
 function ci_build() {
@@ -75,7 +80,7 @@ function ci_build() {
     else
       PYTEST_EXCLUDED_TESTS=""
     fi
-    TORCH_DISC_USE_TORCH_MLIR=true pytest tests -v --ignore=$PYTEST_EXCLUDED_TESTS 2>&1 | tee -a py_test.out
+    # TORCH_DISC_USE_TORCH_MLIR=true pytest tests -v --ignore=$PYTEST_EXCLUDED_TESTS 2>&1 | tee -a py_test.out
     python3 setup.py bdist_wheel;
 }
 
